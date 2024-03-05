@@ -5,6 +5,8 @@ class Municipe < ApplicationRecord
   validates :email, presence: true, format: { with: URI::MailTo::EMAIL_REGEXP }
   validate :cpf_validation, :cns_validation, :birth_validation
 
+  has_one_attached :photo
+
   private
 
   def cpf_validation

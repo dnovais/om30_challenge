@@ -6,7 +6,7 @@ FactoryBot.define do
     email { Faker::Internet.email }
     birth { Faker::Date.birthday(min_age: 18, max_age: 65) }
     phone { Faker::PhoneNumber.phone_number }
-    photo { Faker::Internet.url }
+    photo { Rack::Test::UploadedFile.new(Rails.root.join('spec/support/uploads/image_for_test.png'), 'image/png') }
     status { ["ativo", "inativo"].sample }
   end
 end
