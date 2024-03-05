@@ -60,6 +60,19 @@ RSpec.describe Municipe, type: :model do
     end
   end
 
+  context 'email validation' do
+    it 'is valid with a valid email' do
+      municipe = build(:municipe, email: 'test@example.com')
+      expect(municipe).to be_valid
+    end
+
+    it 'is invalid with an invalid email' do
+      municipe = build(:municipe, email: 'invalid_email')
+      municipe.valid?
+      expect(municipe.errors[:email]).to include("is invalid")
+    end
+  end
+
   context 'CNS validation' do
     it 'is valid with a valid CNS number' do
       municipe = build(:municipe)
