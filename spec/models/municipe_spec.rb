@@ -73,6 +73,25 @@ RSpec.describe Municipe, type: :model do
     end
   end
 
+  context 'birth date validation' do
+    it 'is valid with a reasonable birth date' do
+      municipe = build(:municipe, birth: 30.years.ago)
+      expect(municipe).to be_valid
+    end
+
+    it 'is invalid with a future birth date' do
+      municipe = build(:municipe, birth: Date.tomorrow)
+      municipe.valid?
+      expect(municipe.errors[:birth]).to include('cannot be in the future')
+    end
+
+    it 'is invalid with an unlikely birth date' do
+      municipe = build(:municipe, birth: 130.years.ago)
+      municipe.valid?
+      expect(municipe.errors[:birth]).to include('is unlikely')
+    end
+  end
+
   context 'CNS validation' do
     it 'is valid with a valid CNS number' do
       municipe = build(:municipe)

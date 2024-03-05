@@ -3,7 +3,7 @@ class Municipe < ApplicationRecord
 
   validates :full_name, :cpf, :cns, :birth, :phone, :photo, :status, presence: true
   validates :email, presence: true, format: { with: URI::MailTo::EMAIL_REGEXP }
-  validate :cpf_validation, :cns_validation
+  validate :cpf_validation, :cns_validation, :birth_validation
 
   private
 
@@ -22,6 +22,16 @@ class Municipe < ApplicationRecord
 
     unless sum_numbers % 11 == 0
       errors.add(:cns, 'is not valid')
+    end
+  end
+
+  def birth_validation
+    return if birth.blank?
+
+    if birth > Date.today
+      errors.add(:birth, 'cannot be in the future')
+    elsif Date.today.year - birth.year > 120
+      errors.add(:birth, 'is unlikely')
     end
   end
 end
