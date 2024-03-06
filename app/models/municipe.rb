@@ -1,4 +1,7 @@
 class Municipe < ApplicationRecord
+  after_create :send_registration_confirmation
+  after_update :send_status_change_notification, if: :saved_change_to_status?
+
   has_many :addresses
 
   validates :full_name, :cpf, :cns, :birth, :phone, :photo, :status, presence: true
@@ -8,6 +11,14 @@ class Municipe < ApplicationRecord
   has_one_attached :photo
 
   private
+
+  def send_registration_confirmation
+    MunicipeMailer.registration_confirmation(self).deliver_later
+  end
+
+  def send_status_change_notification
+    MunicipeMailer.status_change_notification(self).deliver_later
+  end
 
   def cpf_validation
     errors.add(:cpf, "is not valid") unless CPF.valid?(cpf)
