@@ -1,0 +1,2 @@
+class MunicipeMailer < ApplicationMailer
+end
