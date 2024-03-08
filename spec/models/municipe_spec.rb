@@ -1,8 +1,167 @@
 require 'rails_helper'
 
 RSpec.describe Municipe, type: :model do
+  before(:all) do
+    @municipe_01 = create(
+      :municipe,
+      full_name: 'Joao Silva',
+      cpf: '60877957908',
+      cns: '199406843140000',
+      email: 'joao.silva@example.com',
+      birth: '1980-01-01',
+      phone: '(93) 98258-2760',
+      status: 'active'
+    )
+
+    @municipe_02 = create(
+      :municipe,
+      full_name: 'Maria Silva',
+      cpf: '13228595587',
+      cns: '794482561550000',
+      email: 'maria.silva@example.com',
+      birth: '1987-01-01',
+      phone: '(68) 98328-2233',
+      status: 'inactive'
+    )
+
+    @municipe_03 = create(
+      :municipe,
+      full_name: 'Alice Smith',
+      cpf: '03664608976',
+      cns: '961853722450006',
+      email: 'alice.smith@example.com',
+      birth: '1989-01-01',
+      phone: '(71) 97238-1445',
+      status: 'active'
+    )
+  end
+
   context 'relationships' do
     it { should have_many(:addresses) }
+  end
+
+  context 'filters' do
+    context '.filter_by_full_name' do
+      it 'returns municipes that match the full name' do
+        expect(Municipe.filter_by_full_name('Joao Silva')).to include(@municipe_01)
+        expect(Municipe.filter_by_full_name('Joao Silva')).not_to include(@municipe_02)
+        expect(Municipe.filter_by_full_name('Joao Silva')).not_to include(@municipe_03)
+      end
+
+      it 'is case insensitive' do
+        expect(Municipe.filter_by_full_name('joao silva')).to include(@municipe_01)
+      end
+
+      it 'returns municipes that partially match the full name' do
+        expect(Municipe.filter_by_full_name('Silva')).to include(@municipe_01, @municipe_02)
+        expect(Municipe.filter_by_full_name('Silva')).not_to include(@municipe_03)
+      end
+    end
+
+    context '.filter_by_cpf' do
+      it 'returns municipes with the given CPF' do
+        expect(Municipe.filter_by_cpf('60877957908')).to include(@municipe_01)
+        expect(Municipe.filter_by_cpf('60877957908')).not_to include(@municipe_02, @municipe_03)
+      end
+
+      it 'returns an empty collection when no municipes match the given CPF' do
+        expect(Municipe.filter_by_cpf('00000000000')).to be_empty
+      end
+
+      it 'returns all municipes if the CPF is not present' do
+        expect(Municipe.filter_by_cpf(nil)).to include(@municipe_01, @municipe_02, @municipe_03)
+        expect(Municipe.filter_by_cpf('')).to include(@municipe_01, @municipe_02, @municipe_03)
+      end
+    end
+
+    context '.filter_by_cns' do
+      it 'returns municipes with the given CNS' do
+        expect(Municipe.filter_by_cns('199406843140000')).to include(@municipe_01)
+        expect(Municipe.filter_by_cns('199406843140000')).not_to include(@municipe_02, @municipe_03)
+      end
+
+      it 'returns an empty collection when no municipes match the given CNS' do
+        expect(Municipe.filter_by_cns('000000000000000')).to be_empty
+      end
+
+      it 'returns all municipes if the CNS is not present' do
+        expect(Municipe.filter_by_cns(nil)).to include(@municipe_01, @municipe_02, @municipe_03)
+        expect(Municipe.filter_by_cns('')).to include(@municipe_01, @municipe_02, @municipe_03)
+      end
+    end
+
+    context '.filter_by_email' do
+      it 'returns municipes that match the email' do
+        expect(Municipe.filter_by_email('joao.silva@example.com')).to include(@municipe_01)
+        expect(Municipe.filter_by_email('joao.silva@example.com')).not_to include(@municipe_02, @municipe_03)
+      end
+
+      it 'is case insensitive' do
+        expect(Municipe.filter_by_email('JOAO.SILVA@EXAMPLE.COM')).to include(@municipe_01)
+      end
+
+      it 'returns municipes that partially match the email' do
+        expect(Municipe.filter_by_email('silva@example.com')).to include(@municipe_01, @municipe_02)
+        expect(Municipe.filter_by_email('silva@example.com')).not_to include(@municipe_03)
+      end
+
+      it 'returns an empty collection when no municipes match the given email' do
+        expect(Municipe.filter_by_email('nonexistent@example.com')).to be_empty
+      end
+
+      it 'returns all municipes if the email is not present' do
+        expect(Municipe.filter_by_email(nil)).to include(@municipe_01, @municipe_02, @municipe_03)
+        expect(Municipe.filter_by_email('')).to include(@municipe_01, @municipe_02, @municipe_03)
+      end
+    end
+
+    context '.filter_by_birth' do
+      it 'returns municipes with the given birth date' do
+        expect(Municipe.filter_by_birth('1980-01-01')).to include(@municipe_01)
+        expect(Municipe.filter_by_birth('1980-01-01')).not_to include(@municipe_02, @municipe_03)
+      end
+
+      it 'returns an empty collection when no municipes match the given birth date' do
+        expect(Municipe.filter_by_birth('2000-01-01')).to be_empty
+      end
+
+      it 'returns all municipes if the birth date is not present' do
+        expect(Municipe.filter_by_birth(nil)).to include(@municipe_01, @municipe_02, @municipe_03)
+        expect(Municipe.filter_by_birth('')).to include(@municipe_01, @municipe_02, @municipe_03)
+      end
+    end
+
+    context '.filter_by_phone' do
+      it 'returns municipes with the given phone number' do
+        expect(Municipe.filter_by_phone('(93) 98258-2760')).to include(@municipe_01)
+        expect(Municipe.filter_by_phone('(93) 98258-2760')).not_to include(@municipe_02, @municipe_03)
+      end
+
+      it 'returns an empty collection when no municipes match the given phone number' do
+        expect(Municipe.filter_by_phone('(00) 00000-0000')).to be_empty
+      end
+
+      it 'returns all municipes if the phone number is not present' do
+        expect(Municipe.filter_by_phone(nil)).to include(@municipe_01, @municipe_02, @municipe_03)
+        expect(Municipe.filter_by_phone('')).to include(@municipe_01, @municipe_02, @municipe_03)
+      end
+    end
+
+    context '.filter_by_status' do
+      it 'returns municipes with the given status' do
+        expect(Municipe.filter_by_status('active')).to include(@municipe_01, @municipe_03)
+        expect(Municipe.filter_by_status('active')).not_to include(@municipe_02)
+      end
+
+      it 'returns an empty collection when no municipes match the given status' do
+        expect(Municipe.filter_by_status('pending')).to be_empty
+      end
+
+      it 'returns all municipes if the status is not present' do
+        expect(Municipe.filter_by_status(nil)).to include(@municipe_01, @municipe_02, @municipe_03)
+        expect(Municipe.filter_by_status('')).to include(@municipe_01, @municipe_02, @municipe_03)
+      end
+    end
   end
 
   context 'validations' do
