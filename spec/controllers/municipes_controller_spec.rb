@@ -77,4 +77,55 @@ RSpec.describe MunicipesController, type: :controller do
       end
     end
   end
+
+  describe 'GET #edit' do
+    let(:municipe) { create(:municipe) }
+
+    it 'assigns the requested municipe to @municipe' do
+      get :edit, params: { id: municipe.id }
+      expect(assigns(:municipe)).to eq(municipe)
+    end
+
+    it 'renders the edit template' do
+      get :edit, params: { id: municipe.id }
+      expect(response).to render_template('edit')
+    end
+  end
+
+  describe 'PATCH #update' do
+    let(:municipe) { create(:municipe) }
+
+    context 'with valid attributes' do
+      let(:new_attributes) { { full_name: 'New Name' } }
+
+      it 'updates the requested municipe' do
+        patch :update, params: { id: municipe.id, municipe: new_attributes }
+        municipe.reload
+        expect(municipe.full_name).to eq('New Name')
+      end
+
+      it 'redirects to the municipes path with a notice' do
+        patch :update, params: { id: municipe.id, municipe: new_attributes }
+        expect(response).to redirect_to(municipes_path)
+        expect(flash[:notice]).to eq('Municipe was successfully updated.')
+      end
+    end
+  end
+
+  describe 'PATCH #update with invalid attributes' do
+    let(:municipe) { create(:municipe) }
+    let(:invalid_attributes) { { full_name: nil } }  # Assuming full_name is required
+
+    it 'does not change the municipe' do
+      expect do
+        patch :update, params: { id: municipe.id, municipe: invalid_attributes }
+        municipe.reload
+      end.not_to change(municipe, :full_name)
+    end
+
+    it 're-renders the edit template' do
+      patch :update, params: { id: municipe.id, municipe: invalid_attributes }
+      expect(response).to render_template('edit')
+    end
+  end
 end

@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class MunicipesController < ApplicationController
+  before_action :set_municipe, only: %i[edit update]
+
   def index
     if params[:search].present?
       @municipes = Municipe.filter_by_full_name(params[:search])
@@ -32,7 +34,21 @@ class MunicipesController < ApplicationController
     end
   end
 
+  def edit; end
+
+  def update
+    if @municipe.update(municipe_params)
+      redirect_to municipes_path, notice: "Municipe was successfully updated."
+    else
+      render :edit
+    end
+  end
+
   private
+
+  def set_municipe
+    @municipe = Municipe.find(params[:id])
+  end
 
   def municipe_params
     params.require(:municipe).permit(:full_name, :cpf, :cns, :email, :birth, :phone, :photo, :status)
