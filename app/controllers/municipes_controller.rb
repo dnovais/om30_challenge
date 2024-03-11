@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class MunicipesController < ApplicationController
-  before_action :set_municipe, only: %i[edit update]
+  before_action :set_municipe, only: %i[show edit update]
 
   def index
     if params[:search].present?
@@ -10,6 +10,8 @@ class MunicipesController < ApplicationController
       @municipes = Municipe.all
     end
   end
+
+  def show; end
 
   def new
     @municipe = Municipe.new

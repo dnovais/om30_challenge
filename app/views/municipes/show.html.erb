@@ -1,0 +1,44 @@
+<%= turbo_frame_tag 'municipes_frame' do %>
+  <div class="p-6 bg-white shadow rounded-lg">
+    <div class="flex flex-col items-center">
+      <% if @municipe.photo.attached? %>
+        <%= image_tag @municipe.photo.variant(resize_to_limit: [150, 150]).processed, class: "inline-block h-24 w-24 rounded-full overflow-hidden bg-gray-100" %>
+      <% else %>
+        <span class="inline-block h-24 w-24 rounded-full overflow-hidden bg-gray-100">
+          <svg class="h-full w-full text-gray-300" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M24 22.3V1.7C24 .8 23.2 0 22.3 0H1.7C.8 0 0 .8 0 1.7v20.6c0 .9.8 1.7 1.7 1.7h20.6c.9 0 1.7-.8 1.7-1.7zM12 7a5 5 0 11.001 10.001A5 5 0 0112 7zm8 13H4v-2c0-2.7 5.3-4 8-4s8 1.3 8 4v2z"/>
+          </svg>
+        </span>
+      <% end %>
+    </div>
+
+    <h2 class="text-2xl font-bold text-gray-800 mb-6">Municipe Details</h2>
+
+    <div class="border-b border-gray-200 mb-4">
+      <p class="text-lg text-gray-600"><strong>Full Name:</strong> <%= @municipe.full_name %></p>
+    </div>
+
+    <div class="border-b border-gray-200 mb-4">
+      <p class="text-lg text-gray-600"><strong>CPF:</strong> <%= @municipe.cpf %></p>
+    </div>
+
+    <div class="border-b border-gray-200 mb-4">
+      <p class="text-lg text-gray-600"><strong>CNS:</strong> <%= @municipe.cns %></p>
+    </div>
+
+    <div class="border-b border-gray-200 mb-4">
+      <p class="text-lg text-gray-600"><strong>Email:</strong> <%= @municipe.email %></p>
+    </div>
+
+    <div class="mb-6">
+      <p class="text-lg text-gray-600"><strong>Status:</strong> <%= @municipe.status.capitalize %></p>
+    </div>
+
+    <!-- More fields here -->
+
+    <div class="flex justify-end space-x-4">
+      <%= link_to 'Edit', edit_municipe_path(@municipe), class: "inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700 active:bg-blue-900 focus:outline-none focus:border-blue-900 focus:ring focus:ring-blue-300 disabled:opacity-25 transition" %>
+      <%= link_to 'Back to List', municipes_path, class: "inline-flex items-center px-4 py-2 bg-gray-300 border border-transparent rounded-md font-semibold text-xs text-gray-700 uppercase tracking-widest hover:bg-gray-400 active:bg-gray-600 focus:outline-none focus:border-gray-600 focus:ring focus:ring-gray-200 disabled:opacity-25 transition" %>
+    </div>
+  </div>
+<% end %>

@@ -33,6 +33,20 @@ RSpec.describe MunicipesController, type: :controller do
     end
   end
 
+  describe 'GET #show' do
+    let(:municipe) { create(:municipe) }
+
+    it 'assigns the requested municipe to @municipe' do
+      get :show, params: { id: municipe.id }
+      expect(assigns(:municipe)).to eq(municipe)
+    end
+
+    it 'renders the show template' do
+      get :show, params: { id: municipe.id }
+      expect(response).to render_template('show')
+    end
+  end
+
   describe 'GET #new' do
     it 'assigns a new Municipe to @municipe' do
       get :new
