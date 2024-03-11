@@ -1,0 +1,70 @@
+<%= form_with(model: municipe, local: true, multipart: true, class: "max-w-4xl mx-auto p-5 space-y-6 bg-white shadow-md rounded-lg") do |form| %>
+  <div class="block">
+    <%= form.label :full_name, 'Full Name', class: "block text-sm font-medium text-gray-700" %>
+    <%= form.text_field :full_name, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" %>
+    <% if municipe.errors[:full_name].any? %>
+      <p class="text-red-500 text-xs italic"><%= municipe.errors[:full_name].first %></p>
+    <% end %>
+  </div>
+
+  <div class="block">
+    <%= form.label :cpf, 'CPF', class: "block text-sm font-medium text-gray-700" %>
+    <%= form.text_field :cpf, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" %>
+    <% if municipe.errors[:cpf].any? %>
+      <p class="text-red-500 text-xs italic"><%= municipe.errors[:cpf].first %></p>
+    <% end %>
+  </div>
+
+  <div class="block">
+    <%= form.label :cns, 'CNS (National Health Card)', class: "block text-sm font-medium text-gray-700" %>
+    <%= form.text_field :cns, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" %>
+    <% if municipe.errors[:cns].any? %>
+      <p class="text-red-500 text-xs italic"><%= municipe.errors[:cns].first %></p>
+    <% end %>
+  </div>
+
+  <div class="block">
+    <%= form.label :email, 'Email', class: "block text-sm font-medium text-gray-700" %>
+    <%= form.email_field :email, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" %>
+    <% if municipe.errors[:email].any? %>
+      <p class="text-red-500 text-xs italic"><%= municipe.errors[:email].first %></p>
+    <% end %>
+  </div>
+
+  <div class="block">
+    <%= form.label :birth, 'Date of Birth', class: "block text-sm font-medium text-gray-700" %>
+    <%= form.date_field :birth, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" %>
+    <% if municipe.errors[:birth].any? %>
+      <p class="text-red-500 text-xs italic"><%= municipe.errors[:birth].first %></p>
+    <% end %>
+  </div>
+
+  <div class="block">
+    <%= form.label :phone, 'Phone', class: "block text-sm font-medium text-gray-700" %>
+    <%= form.telephone_field :phone, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" %>
+    <% if municipe.errors[:phone].any? %>
+      <p class="text-red-500 text-xs italic"><%= municipe.errors[:phone].first %></p>
+    <% end %>
+  </div>
+
+  <div class="block">
+    <%= form.label :photo, 'Photo', class: "block text-sm font-medium text-gray-700" %>
+    <%= form.file_field :photo, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" %>
+    <% if municipe.errors[:photo].any? %>
+      <p class="text-red-500 text-xs italic"><%= municipe.errors[:photo].first %></p>
+    <% end %>
+  </div>
+
+  <div class="block">
+    <%= form.label :status, 'Status', class: "block text-sm font-medium text-gray-700" %>
+    <%= form.select :status, ['Active', 'Inactive'], {}, { class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" } %>
+    <% if municipe.errors[:status].any? %>
+      <p class="text-red-500 text-xs italic"><%= municipe.errors[:status].first %></p>
+    <% end %>
+  </div>
+
+  <div class="flex justify-end space-x-4">
+    <%= form.submit "Save", class: "px-6 py-2 bg-blue-600 text-white font-bold rounded hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75" %>
+    <%= link_to 'Cancel', municipes_path, class: "px-6 py-2 bg-gray-300 text-gray-700 font-bold rounded hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-opacity-75" %>
+  </div>
+<% end %>

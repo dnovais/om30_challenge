@@ -32,4 +32,49 @@ RSpec.describe MunicipesController, type: :controller do
       end
     end
   end
+
+  describe 'GET #new' do
+    it 'assigns a new Municipe to @municipe' do
+      get :new
+      expect(assigns(:municipe)).to be_a_new(Municipe)
+    end
+
+    it 'renders the new template' do
+      get :new
+      expect(response).to render_template('new')
+    end
+  end
+
+  describe 'POST #create' do
+    context 'with valid parameters' do
+      let(:valid_attributes) { attributes_for(:municipe) }
+
+      it 'creates a new Municipe' do
+        expect {
+          post :create, params: { municipe: valid_attributes }
+        }.to change(Municipe, :count).by(1)
+      end
+
+      it 'redirects to the municipes path with a notice' do
+        post :create, params: { municipe: valid_attributes }
+        expect(response).to redirect_to(municipes_path)
+        expect(flash[:notice]).to eq('Municipe was successfully created.')
+      end
+    end
+
+    context 'with invalid parameters' do
+      let(:invalid_attributes) { attributes_for(:municipe, full_name: nil) }  # Assuming full_name is required
+
+      it 'does not create a new Municipe' do
+        expect {
+          post :create, params: { municipe: invalid_attributes }
+        }.not_to change(Municipe, :count)
+      end
+
+      it 're-renders the new template' do
+        post :create, params: { municipe: invalid_attributes }
+        expect(response).to render_template('new')
+      end
+    end
+  end
 end
