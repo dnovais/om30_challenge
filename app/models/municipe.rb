@@ -1,6 +1,6 @@
 class Municipe < ApplicationRecord
-  # after_create :send_registration_confirmation
-  # after_update :send_status_change_notification, if: :saved_change_to_status?
+  after_create :send_registration_confirmation
+  after_update :send_status_change_notification, if: :saved_change_to_status?
 
   has_many :addresses, dependent: :destroy
 

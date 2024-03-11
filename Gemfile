@@ -56,6 +56,7 @@ group :development, :test do
   gem "debug", platforms: %i[ mri windows ]
 
   gem 'rspec-rails', '~> 5.0'
+  gem 'rails-controller-testing'
   gem 'factory_bot_rails'
   gem 'faker'
   gem 'cpf_faker'
