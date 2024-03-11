@@ -3,23 +3,38 @@ version: '3.8'
 services:
   db:
     image: postgres:14
+    ports:
+      - "5432:5432"
     volumes:
-      - ./tmp/db:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql/data
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-    ports:
-      - "5432:5432"
+    networks:
+      - om30net
 
   web:
     build: .
-    command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
+    command: [ "rails", "server", "-b", "0.0.0.0" ]
     volumes:
-      - .:/myapp
+      - .:/app
+      - bundle_cache:/usr/local/bundle
+      - letter_opener_emails:/app/tmp/letter_opener
     ports:
       - "3000:3000"
     environment:
       RAILS_ENV: development
-      DATABASE_URL: postgresql://postgres:postgres@db:5432/myapp_development
+      DATABASE_URL: postgresql://postgres:postgres@db/om3o_challenge_development
     depends_on:
       - db
+    networks:
+      - om30net
+
+volumes:
+  postgres_data:
+  bundle_cache:
+  letter_opener_emails:
+
+
+networks:
+  om30net:
